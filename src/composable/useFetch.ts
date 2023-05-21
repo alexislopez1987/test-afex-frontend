@@ -2,6 +2,7 @@ import axios from 'axios'
 import type iVideos from '@/dto/video.dto'
 import { ref } from 'vue'
 import type { Ref } from 'vue'
+import settings from '@/config/settings'
 
 export default function useFetch() {
   const data: Ref<iVideos[]> = ref([])
@@ -9,7 +10,7 @@ export default function useFetch() {
   const loading: Ref<boolean> = ref(false)
   const { signal, abort } = new AbortController()
 
-  const baseUrl = `http://localhost:8095/v1`
+  const baseUrl = settings.VUE_APP_BASE_URL
 
   const headers = {
     'Content-Type': 'application/json',
