@@ -58,6 +58,7 @@ export default function useFetch() {
     }
   }
 
+  /*
   const fetchVideoById = async (videoId: string) => {
     loading.value = true
     const videoUrl = `${baseUrl}/youtube-video/${videoId}`
@@ -75,6 +76,7 @@ export default function useFetch() {
       loading.value = false
     }
   }
+  */
 
   return {
     data,
