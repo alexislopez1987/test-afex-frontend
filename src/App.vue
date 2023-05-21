@@ -1,7 +1,9 @@
 <script setup lang="ts"></script>
 
 <template>
-  <videos-album></videos-album>
+  <div class="container">
+    <videos-album></videos-album>
+  </div>
 </template>
 
 <script>
@@ -17,14 +19,12 @@ export default {
 <style>
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 html {
   font-family: sans-serif;
-}
-
-body {
-  margin: 0;
 }
 
 .container {
@@ -33,21 +33,5 @@ body {
   margin: 3rem auto;
   padding: 1rem;
   border-radius: 12px;
-}
-
-button {
-  background-color: #1f001f;
-  border: 1px solid #1f001f;
-  color: white;
-  font: inherit;
-  cursor: pointer;
-  padding: 0.5rem 1.5rem;
-  margin-right: 1rem;
-}
-
-button:hover,
-button:active {
-  background-color: #750a75;
-  border-color: #750a75;
 }
 </style>

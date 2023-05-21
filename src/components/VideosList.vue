@@ -1,10 +1,7 @@
 <template>
-  <section class="container">
-    <h2>Mis Videos</h2>
-    <ul>
-      <li v-for="video in videos" :key="video.id">{{ video.text }}</li>
-    </ul>
-  </section>
+  <ul>
+    <li v-for="video in videos" :key="video.id">{{ video.text }}</li>
+  </ul>
 </template>
 
 <script lang="ts">
