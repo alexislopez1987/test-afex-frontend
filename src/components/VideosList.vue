@@ -1,13 +1,31 @@
 <template>
   <div class="container-card-video">
     <div v-for="video in videos" :key="video.video_id" class="card-video">
-      <img :src="video.thumbnail_medium" alt="imagen video youtube" />
+      <img
+        :src="video.thumbnail_medium"
+        alt="imagen video youtube"
+        class="img_video"
+        @click="
+          () => {
+            openVideo(video)
+          }
+        "
+      />
       <button class="button_x" id="{{ video.video_id }}" @click="tyrDeleteVideo(video.video_id)">
         X
       </button>
       <span class="video_time">{{ video.duration }}</span>
     </div>
   </div>
+
+  <PopUp v-if="videoToShow !== null" :TogglePopup="() => togglePopupShowVideo()">
+    <div class="container-video">
+      <video width="320" height="240" controls>
+        <source :src="`https://youtu.be/${videoToShow.video_id}`" type="video/mp4" />
+      </video>
+      <div class="video-description">{{ videoToShow.description }}</div>
+    </div>
+  </PopUp>
 
   <PopUp v-if="popupIsTriggered === true" :TogglePopup="() => TogglePopup()">
     <h2>¿Seguro que quieres eliminar este video?</h2>
@@ -38,6 +56,7 @@
 
 <script lang="ts">
 import PopUp from '@/components/PopUp.vue'
+import type iVideos from '@/dto/video.dto'
 import { ref } from 'vue'
 import type { Ref } from 'vue'
 
@@ -50,9 +69,14 @@ export default {
   setup(_, context) {
     const popupIsTriggered: Ref<boolean> = ref(false)
     const videoIdToDelete: Ref<string> = ref('')
+    const videoToShow: Ref<iVideos | null> = ref(null)
 
     const TogglePopup = () => {
       popupIsTriggered.value = !popupIsTriggered.value
+    }
+
+    const togglePopupShowVideo = () => {
+      videoToShow.value = null
     }
 
     async function tyrDeleteVideo(videoId: string) {
@@ -68,12 +92,19 @@ export default {
       }
     }
 
+    function openVideo(video: iVideos) {
+      videoToShow.value = video
+    }
+
     return {
       tyrDeleteVideo,
       deleteVideoFunc,
       PopUp,
       TogglePopup,
-      popupIsTriggered
+      popupIsTriggered,
+      openVideo,
+      videoToShow,
+      togglePopupShowVideo
     }
   }
 }
@@ -138,5 +169,25 @@ export default {
   border-radius: 12px;
   padding: 0.5rem;
   cursor: pointer;
+}
+
+.img_video {
+  cursor: pointer;
+}
+
+.container-video {
+  padding-top: 5rem;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.video-description {
+  overflow: auto;
+  height: 250px;
+  width: 250px;
 }
 </style>
