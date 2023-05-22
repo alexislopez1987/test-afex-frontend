@@ -9,7 +9,7 @@
     </div>
   </div>
 
-  <Popup v-if="popupIsTriggered === true" :TogglePopup="() => TogglePopup()">
+  <PopUp v-if="popupIsTriggered === true" :TogglePopup="() => TogglePopup()">
     <h2>¿Seguro que quieres eliminar este video?</h2>
     <div class="container-buttons">
       <button
@@ -33,7 +33,7 @@
         Eliminar
       </button>
     </div>
-  </Popup>
+  </PopUp>
 </template>
 
 <script lang="ts">
@@ -44,6 +44,9 @@ import type { Ref } from 'vue'
 export default {
   props: ['videos'],
   emits: ['delete-video'],
+  components: {
+    PopUp
+  },
   setup(_, context) {
     const popupIsTriggered: Ref<boolean> = ref(false)
     const videoIdToDelete: Ref<string> = ref('')
@@ -99,6 +102,7 @@ export default {
   background-color: black;
   color: white;
   width: 1.5rem;
+  cursor: pointer;
 }
 
 .video_time {
@@ -117,17 +121,22 @@ export default {
   flex-wrap: wrap;
   justify-content: flex-end;
   align-items: center;
+  gap: 10px;
 }
 
 .button_cancel {
   background-color: white;
   color: #0d6efd;
   border-radius: 12px;
+  padding: 0.5rem;
+  cursor: pointer;
 }
 
 .button_delete {
   background-color: #0d6efd;
   color: white;
   border-radius: 12px;
+  padding: 0.5rem;
+  cursor: pointer;
 }
 </style>

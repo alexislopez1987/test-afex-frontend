@@ -21,14 +21,14 @@ export default {
   right: 0;
   bottom: 0;
   z-index: 99;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.3);
 
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.popup-inner {
+.popup .popup-inner {
   background: #fff;
   padding: 32px;
   position: relative;
@@ -36,7 +36,13 @@ export default {
 
 .popup-close {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 0.7rem;
+  right: 0.7rem;
+  color: black;
+  width: 2rem;
+  font-weight: bold;
+  background-color: white;
+  border: 0;
+  cursor: pointer;
 }
 </style>

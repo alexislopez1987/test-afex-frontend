@@ -2,14 +2,15 @@
   <div v-if="loading === true">Loading...</div>
   <div v-else>
     <add-video @add-video="addVideo"></add-video>
-    <videos-list :videos="videos" @delete-video="deleteVideoById"></videos-list>
     <div class="error-msg" v-if="error !== ''">{{ error }}</div>
     <div class="success-msg" v-if="successMsg !== ''">{{ successMsg }}</div>
+    <div class="info-msg" v-if="infoMsg !== ''">{{ infoMsg }}</div>
+    <videos-list :videos="videos" @delete-video="deleteVideoById"></videos-list>
   </div>
 </template>
 
 <script lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import type { Ref } from 'vue'
 
 import VideosList from './VideosList.vue'
@@ -28,18 +29,11 @@ export default {
     const loading: Ref<boolean> = ref(false)
     const error: Ref<string> = ref('')
     const successMsg: Ref<string> = ref('')
+    const infoMsg: Ref<string> = ref('')
 
     onMounted(async () => {
       await reloadVideos()
     })
-
-    /*
-    const filteredVideos = computed(function () {
-      return videos.value.filter(
-        (video) => !video.text.includes('Angular') && !video.text.includes('React')
-      )
-    })
-    */
 
     async function addVideo(videoId: string) {
       loading.value = true
@@ -63,8 +57,8 @@ export default {
       loading.value = true
       try {
         await deleteVideo(videoId)
-        showSuccessMsg(`Video con id ${videoId} borrado correctamente`)
         await reloadVideos()
+        showSuccessMsg(`Video con id ${videoId} borrado correctamente`)
       } catch (err) {
         const errMsg = err as string
         error.value = errMsg
@@ -78,13 +72,14 @@ export default {
 
       try {
         const newVideos = await fetchAllVideos()
-        if (newVideos === undefined) {
-          videos.value = []
+        if (newVideos.length === 0) {
+          showInfoMsg('No se encontraron videos')
         } else {
-          videos.value = newVideos
+          showInfoMsg('Videos cargados correctamente')
         }
-        showSuccessMsg('Videos cargados correctamente')
+        videos.value = newVideos
       } catch (err) {
+        console.log('error leyendo videos', err)
         const errMsg = err as string
         error.value = errMsg
       } finally {
@@ -100,13 +95,22 @@ export default {
       }, 3000)
     }
 
+    function showInfoMsg(msg: string) {
+      infoMsg.value = msg
+
+      setTimeout(() => {
+        infoMsg.value = ''
+      }, 3000)
+    }
+
     return {
       addVideo,
       deleteVideoById,
       loading,
       error,
       videos,
-      successMsg
+      successMsg,
+      infoMsg
     }
   }
 }
@@ -123,6 +127,13 @@ export default {
 .success-msg {
   margin-top: 0.5rem;
   background-color: #208637;
+  color: white;
+  width: 90%;
+}
+
+.info-msg {
+  margin-top: 0.5rem;
+  background-color: #0d6efd;
   color: white;
   width: 90%;
 }
