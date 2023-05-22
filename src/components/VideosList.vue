@@ -20,9 +20,21 @@
 
   <PopUp v-if="videoToShow !== null" :TogglePopup="() => togglePopupShowVideo()">
     <div class="container-video">
-      <video width="320" height="240" controls>
-        <source :src="`https://youtu.be/${videoToShow.video_id}`" type="video/mp4" />
-      </video>
+      <iframe
+        width="320"
+        height="240"
+        :src="`https://www.youtube.com/embed/${videoToShow.video_id}`"
+        title="YouTube video player"
+        frameborder="0"
+        allow="accelerometer; 
+        autoplay; 
+        clipboard-write; 
+        encrypted-media; 
+        gyroscope; 
+        picture-in-picture;
+        web-share"
+        allowfullscreen
+      ></iframe>
       <div class="video-description">{{ videoToShow.description }}</div>
     </div>
   </PopUp>
