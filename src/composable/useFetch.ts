@@ -19,7 +19,7 @@ export default function useFetch() {
 
   const fetchAllVideos = async () => {
     loading.value = true
-    const albumUrl = `${baseUrl}/album`
+    const albumUrl = `${baseUrl}/youtube-videos`
     try {
       const videoList = await axios.get<iVideos[]>(albumUrl, {
         headers,
@@ -37,10 +37,10 @@ export default function useFetch() {
 
   const addVideoToAlbum = async (videoId: string) => {
     loading.value = true
-    const videoUrl = `${baseUrl}/youtube-video/${videoId}`
+    const videoUrl = `${baseUrl}/create-video`
 
-    const params: iVideos = {
-      id: videoId
+    const params = {
+      videoId
     }
 
     try {

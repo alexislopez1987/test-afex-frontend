@@ -1,11 +1,9 @@
 <template>
-  <div>
-    <div v-if="loading === true">Loading...</div>
-    <div v-else>
-      <add-video @add-video="addVideo"></add-video>
-      <videos-list :videos="videos"></videos-list>
-      <div v-if="error !== null">{{ error }}</div>
-    </div>
+  <div v-if="loading === true">Loading...</div>
+  <div v-else>
+    <add-video @add-video="addVideo"></add-video>
+    <videos-list :videos="videos"></videos-list>
+    <div v-if="error !== null">{{ error }}</div>
   </div>
 </template>
 
@@ -16,6 +14,7 @@ import type { Ref } from 'vue'
 import VideosList from './VideosList.vue'
 import AddVideo from './AddVideo.vue'
 import useFetch from '@/composable/useFetch'
+import type iVideos from '@/dto/video.dto'
 
 export default {
   components: {
@@ -24,18 +23,16 @@ export default {
   },
   setup() {
     const { data, error, loading, fetchAllVideos, addVideoToAlbum } = useFetch()
-
-    /*
-    const videosToShow: iVideos[] = []
-    videosToShow.push({ id: '1', text: 'video 1' })
-    videosToShow.push({ id: '2', text: 'video 2' })
-    */
-
-    //const videos: Ref<iVideos[]> = ref(videosToShow)
-    //const videos: Ref<iVideos[]> = ref([])
+    const videos: Ref<iVideos[]> = ref([])
 
     onMounted(async () => {
-      await fetchAllVideos()
+      const videosLoaded = await fetchAllVideos()
+
+      if (videosLoaded) {
+        videos.value = videosLoaded
+      } else {
+        videos.value = []
+      }
     })
 
     /*
@@ -58,8 +55,10 @@ export default {
       addVideo,
       loading,
       error,
-      videos: data
+      videos
     }
   }
 }
 </script>
+
+<style scoped></style>

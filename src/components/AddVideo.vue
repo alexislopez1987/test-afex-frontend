@@ -1,10 +1,14 @@
 <template>
   <form @submit.prevent="addVideo">
-    <div>
-      <h5>Añadir nuevo video</h5>
-      <input type="text" id="videolink" v-model="enteredText" placeholder="Añadir" />
-      <button class="button-add-video" :disabled="invalidInput === ''">Añadir</button>
-    </div>
+    <h3 class="title">Añadir nuevo video</h3>
+    <input
+      type="text"
+      class="text-add-video"
+      id="videolink"
+      v-model="enteredText"
+      placeholder="Añadir"
+    />
+    <button class="button-add-video">Añadir</button>
     <p class="error" v-if="invalidInput !== ''">{{ invalidInput }}</p>
   </form>
 </template>
@@ -68,5 +72,14 @@ export default {
 .error {
   background-color: red;
   color: white;
+}
+
+.text-add-video {
+  width: 80dvh;
+  height: 2.9rem;
+}
+
+.title {
+  font-weight: bold;
 }
 </style>

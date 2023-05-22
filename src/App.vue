@@ -25,11 +25,13 @@ export default {
 
 html {
   font-family: sans-serif;
+  list-style: none;
 }
 
 .container {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
-  max-width: 25rem;
+  box-shadow: 0 2px 8px white;
+  max-width: 80vw;
+  height: 80vh;
   margin: 3rem auto;
   padding: 1rem;
   border-radius: 12px;
