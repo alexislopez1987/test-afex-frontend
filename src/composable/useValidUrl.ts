@@ -11,7 +11,7 @@ export default function useValidUrl() {
       return
     }
 
-    if (!url.includes('youtube.com') || !url.includes('youtu.be')) {
+    if (url.includes('youtube.com') === false || !url.includes('youtu.be') === false) {
       errorMsg.value = `Url ${url} no es válida`
       return
     }

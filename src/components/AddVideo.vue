@@ -1,16 +1,18 @@
 <template>
-  <form @submit.prevent="addVideo">
-    <h3 class="title">Añadir nuevo video</h3>
-    <input
-      type="text"
-      class="text-add-video"
-      id="videolink"
-      v-model="enteredText"
-      placeholder="Añadir"
-    />
-    <button class="button-add-video">Añadir</button>
-    <p class="error" v-if="invalidInput !== ''">{{ invalidInput }}</p>
-  </form>
+  <div class="container-form">
+    <form @submit.prevent="addVideo">
+      <h3 class="title">Añadir nuevo video</h3>
+      <input
+        type="text"
+        class="text-add-video"
+        id="videolink"
+        v-model="enteredText"
+        placeholder="Añadir"
+      />
+      <button class="button-add-video">Añadir</button>
+      <p class="error" v-if="invalidInput !== ''">{{ invalidInput }}</p>
+    </form>
+  </div>
 </template>
 
 <script lang="ts">
@@ -39,7 +41,7 @@ export default {
         return
       }
 
-      context.emit('add-video', videoId)
+      context.emit('add-video', videoId.value)
       enteredText.value = ''
       invalidInput.value = ''
     }
@@ -72,6 +74,7 @@ export default {
 .error {
   background-color: red;
   color: white;
+  margin-top: 0.6rem;
 }
 
 .text-add-video {
@@ -81,5 +84,9 @@ export default {
 
 .title {
   font-weight: bold;
+}
+
+.container-form {
+  text-align: center;
 }
 </style>

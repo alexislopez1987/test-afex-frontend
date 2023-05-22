@@ -22,7 +22,7 @@ export default {
     AddVideo
   },
   setup() {
-    const { data, error, loading, fetchAllVideos, addVideoToAlbum } = useFetch()
+    const { error, loading, fetchAllVideos, addVideoToAlbum } = useFetch()
     const videos: Ref<iVideos[]> = ref([])
 
     onMounted(async () => {
@@ -44,11 +44,25 @@ export default {
     */
 
     async function addVideo(videoId: string) {
-      await addVideoToAlbum(videoId)
+      loading.value = true
 
-      if (!error) {
-        await fetchAllVideos()
+      try {
+        await addVideoToAlbum(videoId)
+      } catch (err) {
+        const errMsg = err as string
+        error.value = errMsg
       }
+
+      if (error.value === '') {
+        const newVideos = await fetchAllVideos()
+        if (newVideos === undefined) {
+          videos.value = []
+        } else {
+          videos.value = newVideos
+        }
+      }
+
+      loading.value = false
     }
 
     return {

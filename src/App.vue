@@ -30,10 +30,11 @@ html {
 
 .container {
   box-shadow: 0 2px 8px white;
-  max-width: 80vw;
+  width: 95vw;
   height: 80vh;
   margin: 3rem auto;
   padding: 1rem;
   border-radius: 12px;
+  text-align: center;
 }
 </style>

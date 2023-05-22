@@ -6,7 +6,7 @@ import settings from '@/config/settings'
 
 export default function useFetch() {
   const data: Ref<iVideos[]> = ref([])
-  const error: Ref<string | null> = ref(null)
+  const error: Ref<string> = ref('')
   const loading: Ref<boolean> = ref(false)
   const { signal, abort } = new AbortController()
 
