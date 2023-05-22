@@ -2,8 +2,9 @@
   <div v-if="loading === true">Loading...</div>
   <div v-else>
     <add-video @add-video="addVideo"></add-video>
-    <videos-list :videos="videos"></videos-list>
-    <div v-if="error !== null">{{ error }}</div>
+    <videos-list :videos="videos" @delete-video="deleteVideoById"></videos-list>
+    <div class="error-msg" v-if="error !== ''">{{ error }}</div>
+    <div class="success-msg" v-if="successMsg !== ''">{{ successMsg }}</div>
   </div>
 </template>
 
@@ -22,17 +23,14 @@ export default {
     AddVideo
   },
   setup() {
-    const { error, loading, fetchAllVideos, addVideoToAlbum } = useFetch()
+    const { fetchAllVideos, addVideoToAlbum, deleteVideo } = useFetch()
     const videos: Ref<iVideos[]> = ref([])
+    const loading: Ref<boolean> = ref(false)
+    const error: Ref<string> = ref('')
+    const successMsg: Ref<string> = ref('')
 
     onMounted(async () => {
-      const videosLoaded = await fetchAllVideos()
-
-      if (videosLoaded) {
-        videos.value = videosLoaded
-      } else {
-        videos.value = []
-      }
+      await reloadVideos()
     })
 
     /*
@@ -48,31 +46,84 @@ export default {
 
       try {
         await addVideoToAlbum(videoId)
+        showSuccessMsg(`Video con id ${videoId} agregado correctamente`)
       } catch (err) {
         const errMsg = err as string
         error.value = errMsg
       }
 
       if (error.value === '') {
+        await reloadVideos()
+      }
+
+      loading.value = false
+    }
+
+    async function deleteVideoById(videoId: string) {
+      loading.value = true
+      try {
+        await deleteVideo(videoId)
+        showSuccessMsg(`Video con id ${videoId} borrado correctamente`)
+        await reloadVideos()
+      } catch (err) {
+        const errMsg = err as string
+        error.value = errMsg
+      } finally {
+        loading.value = false
+      }
+    }
+
+    async function reloadVideos() {
+      loading.value = true
+
+      try {
         const newVideos = await fetchAllVideos()
         if (newVideos === undefined) {
           videos.value = []
         } else {
           videos.value = newVideos
         }
+        showSuccessMsg('Videos cargados correctamente')
+      } catch (err) {
+        const errMsg = err as string
+        error.value = errMsg
+      } finally {
+        loading.value = false
       }
+    }
 
-      loading.value = false
+    function showSuccessMsg(msg: string) {
+      successMsg.value = msg
+
+      setTimeout(() => {
+        successMsg.value = ''
+      }, 3000)
     }
 
     return {
       addVideo,
+      deleteVideoById,
       loading,
       error,
-      videos
+      videos,
+      successMsg
     }
   }
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.error-msg {
+  margin-top: 0.5rem;
+  background-color: red;
+  color: white;
+  width: 90%;
+}
+
+.success-msg {
+  margin-top: 0.5rem;
+  background-color: #208637;
+  color: white;
+  width: 90%;
+}
+</style>

@@ -1,13 +1,8 @@
 import axios from 'axios'
 import type iVideos from '@/dto/video.dto'
-import { ref } from 'vue'
-import type { Ref } from 'vue'
 import settings from '@/config/settings'
 
 export default function useFetch() {
-  const data: Ref<iVideos[]> = ref([])
-  const error: Ref<string> = ref('')
-  const loading: Ref<boolean> = ref(false)
   const { signal, abort } = new AbortController()
 
   const baseUrl = settings.VUE_APP_BASE_URL
@@ -18,7 +13,6 @@ export default function useFetch() {
   }
 
   const fetchAllVideos = async () => {
-    loading.value = true
     const albumUrl = `${baseUrl}/youtube-videos`
     try {
       const videoList = await axios.get<iVideos[]>(albumUrl, {
@@ -27,16 +21,13 @@ export default function useFetch() {
       })
       return videoList.data
     } catch (err) {
-      console.error('error en fetch', err)
+      console.error('error en fetchAllVideos', err)
       const errMsg = err as string
-      error.value = errMsg
-    } finally {
-      loading.value = false
+      throw new Error(errMsg)
     }
   }
 
   const addVideoToAlbum = async (videoId: string) => {
-    loading.value = true
     const videoUrl = `${baseUrl}/create-video`
 
     const params = {
@@ -50,11 +41,9 @@ export default function useFetch() {
       })
       return videoById.data
     } catch (err) {
-      console.error('error en fetch', err)
+      console.error('error en addVideoToAlbum', err)
       const errMsg = err as string
-      error.value = errMsg
-    } finally {
-      loading.value = false
+      throw new Error(errMsg)
     }
   }
 
@@ -78,12 +67,25 @@ export default function useFetch() {
   }
   */
 
+  const deleteVideo = async (videoId: string) => {
+    const videoUrl = `${baseUrl}/youtube-video/${videoId}`
+
+    try {
+      await axios.delete(videoUrl, {
+        headers,
+        signal
+      })
+    } catch (err) {
+      console.error('error en deleteVideo', err)
+      const errMsg = err as string
+      throw new Error(errMsg)
+    }
+  }
+
   return {
-    data,
-    error,
-    loading,
     abort,
     fetchAllVideos,
-    addVideoToAlbum
+    addVideoToAlbum,
+    deleteVideo
   }
 }
