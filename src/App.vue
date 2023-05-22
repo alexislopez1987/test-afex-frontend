@@ -37,4 +37,8 @@ html {
   border-radius: 12px;
   text-align: center;
 }
+
+#app {
+  overflow-x: hidden;
+}
 </style>

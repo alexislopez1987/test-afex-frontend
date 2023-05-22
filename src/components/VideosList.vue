@@ -128,10 +128,11 @@ export default {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: flex-start;
   align-items: flex-start;
   row-gap: 10px;
   column-gap: 10px;
+  overflow-x: hidden;
 }
 
 .card-video {

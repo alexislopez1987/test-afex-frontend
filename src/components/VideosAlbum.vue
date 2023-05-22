@@ -43,7 +43,7 @@ export default {
         showSuccessMsg(`Video con id ${videoId} agregado correctamente`)
       } catch (err) {
         const errMsg = err as string
-        error.value = errMsg
+        showErrorMsg(errMsg)
       }
 
       if (error.value === '') {
@@ -61,7 +61,7 @@ export default {
         showSuccessMsg(`Video con id ${videoId} borrado correctamente`)
       } catch (err) {
         const errMsg = err as string
-        error.value = errMsg
+        showErrorMsg(errMsg)
       } finally {
         loading.value = false
       }
@@ -81,7 +81,7 @@ export default {
       } catch (err) {
         console.log('error leyendo videos', err)
         const errMsg = err as string
-        error.value = errMsg
+        showErrorMsg(errMsg)
       } finally {
         loading.value = false
       }
@@ -100,6 +100,14 @@ export default {
 
       setTimeout(() => {
         infoMsg.value = ''
+      }, 3000)
+    }
+
+    function showErrorMsg(msg: string) {
+      error.value = msg
+
+      setTimeout(() => {
+        error.value = ''
       }, 3000)
     }
 

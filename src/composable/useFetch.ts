@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 import type iVideos from '@/dto/video.dto'
 import settings from '@/config/settings'
 
@@ -21,8 +21,9 @@ export default function useFetch() {
       })
       return videoList.data
     } catch (err) {
-      console.error('error en fetchAllVideos', err)
-      const errMsg = err as string
+      const errorAxios = err as AxiosError
+      console.error('error en fetchAllVideos', errorAxios)
+      const errMsg = errorAxios.response?.data as string
       throw new Error(errMsg)
     }
   }
@@ -41,8 +42,9 @@ export default function useFetch() {
       })
       return videoById.data
     } catch (err) {
-      console.error('error en addVideoToAlbum', err)
-      const errMsg = err as string
+      const errorAxios = err as AxiosError
+      console.error('error en addVideoToAlbum', errorAxios)
+      const errMsg = errorAxios.response?.data as string
       throw new Error(errMsg)
     }
   }
@@ -76,8 +78,9 @@ export default function useFetch() {
         signal
       })
     } catch (err) {
-      console.error('error en deleteVideo', err)
-      const errMsg = err as string
+      const errorAxios = err as AxiosError
+      console.error('error en deleteVideo', errorAxios)
+      const errMsg = errorAxios.response?.data as string
       throw new Error(errMsg)
     }
   }
